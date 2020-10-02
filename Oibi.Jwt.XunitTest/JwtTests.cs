@@ -37,6 +37,9 @@ namespace Oibi.Jwt.XunitTest
             Assert.True(result.Success);
             Assert.NotEmpty(result.Token);
             Assert.IsType<LoginResponse<DummyUser>>(result);
+
+            var reponse = result as LoginResponse<DummyUser>;
+            Assert.Equal(dto.Email, reponse.Data.Email);
         }
 
         [Fact]

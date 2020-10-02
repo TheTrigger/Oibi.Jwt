@@ -2,7 +2,6 @@
 using Oibi.Jwt.Demo.Models;
 using Oibi.Jwt.Demo.Models.Dto;
 using Oibi.Jwt.Services.AuthService;
-using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -64,17 +63,12 @@ namespace Oibi.Jwt.Demo.Services
                 new Claim(type: ClaimTypes.Role, "user's role"),
             };
 
-            var dictionaryClaims = new Dictionary<string, object>
-            {
-                { "wtf", Guid.NewGuid() },
-                { "test", DateTime.Now }
-            };
-
+            user.Password = null; // Make your own UserDto without password property! This is just a demo project.
             var dto = new LoginResponse<DummyUser>
             {
                 Success = true,
                 Data = user,
-                Token = _jwtProviderService.GenerateToken(dictionaryClaims, userClaims),
+                Token = _jwtProviderService.GenerateToken(userClaims),
             };
 
             return dto;
