@@ -82,9 +82,7 @@ namespace Oibi.Jwt.Services.AuthService
             return _httpContext.HttpContext?.User;
         }
 
-        /// <summary>
-        /// FYI, the validation is already triggered by <see cref="Microsoft.AspNetCore.Authorization.AuthorizeAttribute"/>
-        /// </summary>
+        /// <inheritdoc/>
         public JwtSecurityToken ValidateToken(string token)
         {
             try

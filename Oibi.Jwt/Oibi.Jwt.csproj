@@ -5,6 +5,7 @@
     <PackageProjectUrl>https://github.com/TheTrigger/Oibi.Jwt</PackageProjectUrl>
     <Description>Simplified jwt configuration</Description>
     <RepositoryUrl>https://github.com/TheTrigger/Oibi.Jwt</RepositoryUrl>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

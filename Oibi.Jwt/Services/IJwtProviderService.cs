@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace Oibi.Jwt.Services.AuthService
@@ -60,5 +61,10 @@ namespace Oibi.Jwt.Services.AuthService
         /// </summary>
         /// <returns></returns>
         ClaimsPrincipal RetrieveUserClaims();
+
+        /// <summary>
+        /// FYI, the validation is already triggered by <see cref="Microsoft.AspNetCore.Authorization.AuthorizeAttribute"/>
+        /// </summary>
+        JwtSecurityToken ValidateToken(string token);
     }
 }
