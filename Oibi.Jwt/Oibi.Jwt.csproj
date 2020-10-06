@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -12,7 +12,7 @@
     <Company>oibi.dev</Company>
     <Authors>f.fabrizi91@gmail.com</Authors>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <PackageIcon>jwt.svg</PackageIcon>
+    <PackageIcon>jwt.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,11 +26,5 @@
     <PackageReference Include="Oibi.Authentication" Version="1.0.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="jwt.svg">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
 
 </Project>
