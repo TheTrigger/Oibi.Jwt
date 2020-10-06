@@ -17,8 +17,6 @@ namespace Oibi.Jwt.Extensions
         /// <param name="configuration">Automatically reads 'Jwt' section from configuration</param>
         public static IServiceCollection AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddPasswordHasher();
-
             // setup jwt provider service
             services.AddSingleton<IJwtProviderService, JwtProviderService>();
 

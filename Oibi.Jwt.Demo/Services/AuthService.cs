@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Oibi.Authentication.Models.Dto;
-using Oibi.Authentication.Services;
 using Oibi.Jwt.Demo.Models;
 using Oibi.Jwt.Demo.Models.Dto;
 using Oibi.Jwt.Services.AuthService;
@@ -16,14 +15,14 @@ namespace Oibi.Jwt.Demo.Services
     public class AuthService
     {
         private readonly IJwtProviderService _jwtProviderService;
-        private readonly IHasherService _hasherService;
+        private readonly IPasswordHasher<object> _hasherService;
 
         /// <summary>
         /// Replace this with your users store.
         /// </summary>
         private readonly IDictionary<string, DummyUser> _dummyUsersService = new Dictionary<string, DummyUser>();
 
-        public AuthService(IJwtProviderService jwtProviderService, IHasherService hasherService)
+        public AuthService(IJwtProviderService jwtProviderService, IPasswordHasher<object> hasherService)
         {
             _jwtProviderService = jwtProviderService;
             _hasherService = hasherService;

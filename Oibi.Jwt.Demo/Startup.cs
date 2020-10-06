@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Oibi.Authentication.Extensions;
 using Oibi.Jwt.Demo.Services;
 using Oibi.Jwt.Extensions;
 
@@ -25,6 +26,7 @@ namespace Oibi.Jwt.Demo
             services.AddAuthentication();
             services.AddAuthorization();
 
+            services.AddPasswordHasher<object>();
             services.AddJwt(_configuration);
             services.AddScoped<AuthService>();
         }
