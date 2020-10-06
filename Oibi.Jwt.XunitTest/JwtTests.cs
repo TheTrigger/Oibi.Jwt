@@ -1,7 +1,10 @@
+using Microsoft.Extensions.Options;
+using Oibi.Authentication.Models.Dto;
 using Oibi.Jwt.Demo;
 using Oibi.Jwt.Demo.Models;
 using Oibi.Jwt.Demo.Models.Dto;
 using Oibi.Jwt.Demo.Services;
+using Oibi.Jwt.Models.Configurations;
 using Oibi.Jwt.Services.AuthService;
 using Oibi.TestHelper;
 using System.Threading.Tasks;
@@ -14,12 +17,24 @@ namespace Oibi.Jwt.XunitTest
         private readonly ServerFixture<Startup> _serverFixture;
         private readonly AuthService _authService;
         private readonly IJwtProviderService _jwtProviderService;
+        private readonly JwtSettings _jwtSettings;
 
         public JwtTests(ServerFixture<Startup> serverFixture)
         {
             _serverFixture = serverFixture;
             _authService = _serverFixture.GetService<AuthService>();
-            _jwtProviderService = _serverFixture.GetService<JwtProviderService>();
+            _jwtProviderService = _serverFixture.GetService<IJwtProviderService>();
+            _jwtSettings = _serverFixture.GetService<IOptions<JwtSettings>>().Value;
+        }
+
+        [Fact]
+        public void VerifyJwtSettings()
+        {
+            Assert.NotEmpty(_jwtSettings.Audience);
+            Assert.NotEmpty(_jwtSettings.Issuer);
+            Assert.NotEmpty(_jwtSettings.Secret);
+            Assert.NotEmpty(_jwtSettings.SecretKey);
+            Assert.NotEqual(default, _jwtSettings.TokenDuration);
         }
 
         [Fact]
@@ -46,7 +61,6 @@ namespace Oibi.Jwt.XunitTest
 
             var reponse = result as LoginResponse<DummyUser>;
             Assert.Equal(dto.Email, reponse.Data.Email);
-
         }
 
         [Fact]
@@ -57,7 +71,7 @@ namespace Oibi.Jwt.XunitTest
             Assert.NotNull(result);
             Assert.False(result.Success);
 
-            Assert.IsType<LoginResponse<YourErrorDto>>(result);
+            Assert.IsType<LoginResponse<GenericError>>(result);
         }
     }
 }

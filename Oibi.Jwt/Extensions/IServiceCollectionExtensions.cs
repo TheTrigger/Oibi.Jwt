@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Oibi.Authentication.Extensions;
 using Oibi.Jwt.Models.Configurations;
 using Oibi.Jwt.Services.AuthService;
 
@@ -16,7 +17,7 @@ namespace Oibi.Jwt.Extensions
         /// <param name="configuration">Automatically reads 'Jwt' section from configuration</param>
         public static IServiceCollection AddJwt(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddHttpContextAccessor();
+            services.AddPasswordHasher();
 
             // setup jwt provider service
             services.AddSingleton<IJwtProviderService, JwtProviderService>();

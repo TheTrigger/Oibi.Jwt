@@ -9,6 +9,7 @@ Install-Package Oibi.Jwt
 ```
 
 ### Startup.cs
+
 ```csharp
 private readonly IConfiguration _configuration;
 
@@ -19,25 +20,25 @@ public Startup(IConfiguration configuration)
 
 public void ConfigureServices(IServiceCollection services)
 {
-	services.AddJwt(_configuration);
+  services.AddJwt(_configuration);
 }
 
 ```
 
 ### AuthService.cs
+
 ```csharp
 
 
 ```
 
-
 ## Default table
 
 | Property                 | Default value | Description                                                                                                            |
-|--------------------------|---------------|------------------------------------------------------------------------------------------------------------------------|
+| ------------------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------- |
 | Secret                   | null          | Gets or sets the <see cref="Microsoft.IdentityModel.Tokens.SecurityKey"/> that is to be used for signature validation. |
-| Issuer                   | null          | Gets or sets a String that represents a valid issuer that will be used to check against the token’s issuer             |
-| Audience                 | null          | Gets or sets a string that represents a valid audience that will be used to check against the token’s audience         |
+| Issuer                   | null          | Gets or sets a String that represents a valid issuer that will be used to check against the tokenï¿½s issuer             |
+| Audience                 | null          | Gets or sets a string that represents a valid audience that will be used to check against the tokenï¿½s audience         |
 | ValidateIssuer           | false         | Gets or sets a value indicating whether the Issuer should be validated. True means Yes validation required             |
 | ValidateAudience         | false         | Gets or sets a boolean to control if the audience will be validated during token validation                            |
 | ValidateLifetime         | true          | Gets or sets a boolean to control if the lifetime will be validated during token validation                            |

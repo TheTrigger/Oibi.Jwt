@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Oibi.Jwt.Models.Configurations;
@@ -14,16 +13,13 @@ namespace Oibi.Jwt.Services.AuthService
     public class JwtProviderService : IJwtProviderService
     {
         private readonly JwtSettings _jwtSettings;
-        private readonly IOptions<PasswordHasherOptions> _passwordHasherOptions;
         private readonly IHttpContextAccessor _httpContext;
 
         public JwtProviderService(
             IOptions<JwtSettings> jwtSettings,
-            IOptions<PasswordHasherOptions> passwordHasherOptions,
             IHttpContextAccessor httpContext)
         {
             _jwtSettings = jwtSettings.Value;
-            _passwordHasherOptions = passwordHasherOptions;
             _httpContext = httpContext;
         }
 
@@ -59,21 +55,6 @@ namespace Oibi.Jwt.Services.AuthService
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
-        }
-
-        /// <inheritdoc/>
-        public virtual string HashPassword<T>(T entity, string password) where T : class
-        {
-            var passwordHasher = new PasswordHasher<T>(_passwordHasherOptions);
-            return passwordHasher.HashPassword(entity, password);
-        }
-
-        /// <inheritdoc/>
-        public virtual PasswordVerificationResult VerifyHashedPassword<T>(T entity, string hashedPassword, string providedPassword)
-             where T : class
-        {
-            var passwordHasher = new PasswordHasher<T>(_passwordHasherOptions);
-            return passwordHasher.VerifyHashedPassword(entity, hashedPassword, providedPassword);
         }
 
         /// <inheritdoc/>

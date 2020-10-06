@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Oibi.Authentication.Models.Dto;
+using Oibi.Authentication.Services;
 using Oibi.Jwt.Demo.Models;
 using Oibi.Jwt.Demo.Models.Dto;
 using Oibi.Jwt.Services.AuthService;
@@ -14,15 +16,17 @@ namespace Oibi.Jwt.Demo.Services
     public class AuthService
     {
         private readonly IJwtProviderService _jwtProviderService;
+        private readonly IHasherService _hasherService;
 
         /// <summary>
         /// Replace this with your users store.
         /// </summary>
         private readonly IDictionary<string, DummyUser> _dummyUsersService = new Dictionary<string, DummyUser>();
 
-        public AuthService(IJwtProviderService jwtProviderService)
+        public AuthService(IJwtProviderService jwtProviderService, IHasherService hasherService)
         {
             _jwtProviderService = jwtProviderService;
+            _hasherService = hasherService;
         }
 
         /// <summary>
@@ -34,32 +38,27 @@ namespace Oibi.Jwt.Demo.Services
 
             if (!_dummyUsersService.ContainsKey(email))
             {
-                return new LoginResponse<YourErrorDto>
+                return new LoginResponse<GenericError>
                 {
                     Success = false,
-                    Data = new YourErrorDto("‍User does not exists ...") // btw i don't like to give those informations
+                    Data = new GenericError("‍User does not exists ...") // i don't like to give those informations ...
                 };
             }
 
             var user = _dummyUsersService[email]; // get from your user storage
-            if (_jwtProviderService.VerifyHashedPassword(user, user.Password, inputPassword) != PasswordVerificationResult.Success)
+            if (_hasherService.VerifyHashedPassword(user, user.Password, inputPassword) != PasswordVerificationResult.Success)
             {
-                // someone doenst agree to use exceptions for excpected exceptions...
-                // so i did LoginResponseDto<T> to returns Success = false
-
-                //throw new UnauthorizedAccessException("Invalid credentials 🤷‍");
-
-                return new LoginResponse<YourErrorDto>
+                return new LoginResponse<GenericError>
                 {
                     Success = false,
-                    Data = new YourErrorDto("Invalid credentials 🤷‍")
+                    Data = new GenericError("Invalid credentials 🤷‍")
                 };
             }
 
             var userClaims = new[] {
-                new Claim(type: "sub", user.Id.ToString()),
-                new Claim(type: ClaimTypes.Name, user.Name),
-                new Claim(type: ClaimTypes.Email, user.Email),
+                new Claim(type: "sub", user.Id.ToString(), ClaimValueTypes.String),
+                new Claim(type: ClaimTypes.Name, user.Name, ClaimValueTypes.String),
+                new Claim(type: ClaimTypes.Email, user.Email, ClaimValueTypes.Email),
                 new Claim(type: ClaimTypes.Role, "user's role"),
             };
 
@@ -77,8 +76,6 @@ namespace Oibi.Jwt.Demo.Services
         /// <summary>
         /// Super-dummy registration
         /// </summary>
-        /// <param name="registration"></param>
-        /// <returns></returns>
         public async Task RegistrationAsync(RegistrationDto registration)
         {
             await Task.Delay(0); // just because we dont have a remote(db) call here
@@ -89,7 +86,7 @@ namespace Oibi.Jwt.Demo.Services
                 Email = registration.Email,
             };
 
-            user.Password = _jwtProviderService.HashPassword(user, registration.Password);
+            user.Password = _hasherService.HashPassword(user, registration.Password);
 
             _dummyUsersService[registration.Email] = user;
 
